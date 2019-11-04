@@ -4,7 +4,7 @@ const bodyParser = require('koa-bodyparser')
 
 app.use(bodyParser())
 
-app.use(async (ctx) => {
+app.use(async ctx => {
   if (ctx.url === '/' && ctx.method === 'GET') {
     // 显示表单页面
     let html = `
@@ -21,41 +21,12 @@ app.use(async (ctx) => {
         `
     ctx.body = html
   } else if (ctx.url === '/' && ctx.method === 'POST') {
-    let pastData = await parsePostData(ctx)
+    let pastData = ctx.request.body
     ctx.body = pastData
   } else {
     ctx.body = '<h1>404!</h1>'
   }
 })
-
-function parsePostData (ctx) {
-  return new Promise((resolve, reject) => {
-    try {
-      let postdata = ''
-      ctx.req.on('data', (data) => {
-        postdata += data
-      })
-      ctx.req.addListener('end', function () {
-        let parseData = parseQueryStr(postdata)
-        resolve(parseData)
-      })
-    } catch (error) {
-      reject(error)
-    }
-  })
-}
-
-function parseQueryStr (queryStr) {
-  let queryData = {}
-  let queryStrList = queryStr.split('&')
-  console.log(queryStrList)
-  for (let [index, queryStr] of queryStrList.entries()) {
-    let itemList = queryStr.split('=')
-    console.log(itemList)
-    queryData[itemList[0]] = decodeURIComponent(itemList[1])
-  }
-  return queryData
-}
 
 app.listen(3000, () => {
   console.log('[demo] server is starting at port 3000')

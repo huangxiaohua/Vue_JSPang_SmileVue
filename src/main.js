@@ -3,10 +3,28 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import { Button, Row, Col, Swipe, SwipeItem, Lazyload, List } from 'vant'
+import {
+  Button,
+  Row,
+  Col,
+  Swipe,
+  SwipeItem,
+  Lazyload,
+  List,
+  Field,
+  NavBar
+} from 'vant'
 import axios from './http/api'
 
-Vue.use(Button).use(Row).use(Col).use(Swipe).use(SwipeItem).use(Lazyload).use(List)
+Vue.use(Button)
+  .use(Row)
+  .use(Col)
+  .use(Swipe)
+  .use(SwipeItem)
+  .use(Lazyload)
+  .use(List)
+  .use(Field)
+  .use(NavBar)
 
 // 引入mockjs
 require('./mock/mock.js')

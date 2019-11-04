@@ -42,14 +42,57 @@
         <swiper :options="swiperOption">
           <swiper-slide v-for=" (item ,index) in recommendGoods" :key="index">
             <div class="recommend-item">
-              <img :src="item.image" width="80%" />
+              <img :src="item.image" width="60%" />
               <div>{{item.goodsName}}</div>
               <div>￥{{item.price}} (￥{{item.mallPrice}})</div>
             </div>
           </swiper-slide>
+          <div class="swiper-pagination" slot="pagination"></div>
         </swiper>
-        <div class="swiper-pagination" slot="pagination"></div>
-        <swiperDefault></swiperDefault>
+
+        <!--         <swiperDefault></swiperDefault>
+        <swiperText></swiperText>-->
+      </div>
+    </div>
+
+    <!--floor one area-->
+    <!-- <div class="floor">
+      <div class="floor-title">畅销商品</div>
+      <div class="floor-anomaly">
+        <div class="floor-one">
+          <img :src="floor1_1.image" width="100%" />
+        </div>
+        <div>
+          <div class="floor-two">
+            <img :src="floor1_2.image" width="100%" />
+          </div>
+          <div>
+            <img :src="floor1_3.image" width="100%" />
+          </div>
+        </div>
+      </div>
+      <div class="floor-rule">
+        <div v-for="(item ,index) in floor1.slice(3)" :key="index">
+          <img :src="item.image" width="100%" />
+        </div>
+      </div>
+    </div>-->
+    <floorComponent :floorData="floor1" :floorTitle="floorName.floor1"></floorComponent>
+    <floorComponent :floorData="floor2" :floorTitle="floorName.floor2"></floorComponent>
+    <floorComponent :floorData="floor3" :floorTitle="floorName.floor3"></floorComponent>
+
+    <!--Hot Area-->
+    <div class="hot-area">
+      <div class="hot-title">热卖商品</div>
+      <div class="hot-goods">
+        <!--这里需要一个list组件-->
+        <van-list>
+          <van-row gutter="20">
+            <van-col span="12" v-for="( item, index) in hotGoods" :key="index">
+              <goods-info :goodsImage="item.image" :goodsName="item.name" :goodsPrice="item.price"></goods-info>
+            </van-col>
+          </van-row>
+        </van-list>
       </div>
     </div>
   </div>
@@ -61,13 +104,21 @@ import "swiper/dist/css/swiper.css";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import swiperDefault from "../swiper/swiperDefault";
 
+import swiperText from "../swiper/swiperText";
+
+import floorComponent from "../component/floorComponent";
+import goodsInfo from "../component/goodsInfoComponent";
+import url from "@/serviceAPI.config.js";
+
 export default {
   data() {
     return {
       swiperOption: {
         // slidesPerView: 3,
+        loop: true,
         pagination: {
-          el: ".swiper-pagination"
+          el: ".swiper-pagination",
+          clickable: true
         }
       },
       locationIcon: require("../../assets/images/location.png"),
@@ -76,16 +127,23 @@ export default {
       adBanner: "",
       recommendGoods: [],
       floor1: [],
-      floor2: [],
-      floor3: [],
+      floor2: [], //楼层2的数据
+      floor3: [], //楼层3的数据
       floorName: {},
       hotGoods: [] //热卖商品
     };
   },
-  components: { swiper, swiperSlide, swiperDefault },
+  components: {
+    swiper,
+    swiperSlide,
+    swiperDefault,
+    swiperText,
+    floorComponent,
+    goodsInfo
+  },
   created() {
     axios({
-      url: "/getShoppingMallValue",
+      url: url.getShoppingMallInfo,
       method: "get"
     })
       .then(response => {
@@ -97,6 +155,12 @@ export default {
           this.bannerPicArray = response.data.data.slides; //轮播图片
           console.log(this.bannerPicArray);
           this.recommendGoods = response.data.data.recommend; //推荐商品
+          console.log(response.data.data.floor1);
+          this.floor1 = response.data.data.floor1; //楼层1数据
+          this.floor2 = response.data.data.floor2; //楼层2数据
+          this.floor3 = response.data.data.floor3; //楼层3数据
+          this.floorName = response.data.data.floorName; //楼层名称
+          this.hotGoods = response.data.data.hotGoods; //热卖商品
         }
       })
       .catch(error => {
@@ -165,6 +229,7 @@ export default {
   margin-top: 0.3rem;
 }
 .recommend-title {
+  border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
   font-size: 14px;
   padding: 0.2rem;
@@ -175,9 +240,59 @@ export default {
 }
 
 .recommend-item {
-  width: 99%;
+  width: 99.9%;
   border-right: 1px solid #eee;
   font-size: 12px;
   text-align: center;
+}
+
+.floor-title {
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  padding: 0.2rem;
+  color: #e5017d;
+  background-color: #fff;
+}
+
+.floor-anomaly {
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+}
+.floor-anomaly div {
+  width: 10rem;
+
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.floor-one {
+  border-right: 1px solid #ddd;
+}
+.floor-two {
+  border-bottom: 1px solid #ddd;
+}
+.floor-rule {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: #fff;
+}
+.floor-rule div {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 10rem;
+  border-bottom: 1px solid #ddd;
+}
+.floor-rule div:nth-child(odd) {
+  border-right: 1px solid #ddd;
+}
+
+.hot-area {
+  text-align: center;
+  font-size: 14px;
+  height: 1.8rem;
+  line-height: 1.8rem;
 }
 </style>

@@ -6,7 +6,6 @@ const bodyParser = require('koa-bodyparser')
 const cors = require('koa2-cors')
 
 const Router = require('koa-router')
-let user = require('./appApi/user.js')
 
 // 引入connect
 const { connect, initSchemas } = require('./database/init.js')
@@ -32,7 +31,10 @@ app.use(bodyParser())
 app.use(cors())
 
 let router = new Router()
+let user = require('./appApi/user.js')
 router.use('/user', user.routes())
+let goods = require('./appApi/goods.js')
+router.use('/goods', goods.routes())
 
 app.use(router.routes())
 app.use(router.allowedMethods())

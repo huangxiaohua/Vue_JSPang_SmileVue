@@ -32,7 +32,6 @@ export default {
   methods: {
     changeTabBarActive () {
       this.nowPath = this.$route.path.toLowerCase()
-      console.log('999999999999999')
       console.log(this.nowPath.toLowerCase())
       if (this.nowPath == '/cart') {
         this.active = 2

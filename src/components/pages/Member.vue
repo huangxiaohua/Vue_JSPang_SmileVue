@@ -4,15 +4,24 @@
       <van-nav-bar title="会员中心" />
     </div>
     <div class="top">
-      <img src="http://7xjyw1.com1.z0.glb.clouddn.com/touxiang001.jpg"
+      <h4>{{userName}}</h4>
+      <img src=""
            class="top-img" />
     </div>
+
     <div class="login">
+
       <div>
-        <van-button type="warning">我要登录</van-button>
+        <van-button type="warning"
+                    @click="Login">我要登录</van-button>
       </div>
       <div>
-        <van-button type="primary">我要注册</van-button>
+        <van-button type="primary"
+                    @click="Register">我要注册</van-button>
+      </div>
+      <div>
+        <van-button type="warning"
+                    @click="Logout">退出</van-button>
       </div>
     </div>
     <div class="menber">
@@ -36,6 +45,49 @@
 
 <script>
 export default {
+  data () {
+    return {
+      flag: localStorage['token'],
+      userInfo: localStorage['userInfo'] ? JSON.parse(localStorage['userInfo']) : {}
+    }
+  },
+  computed: {
+    userName () {
+      let user = this.userInfo
+      return user.userName
+    }
+  },
+  methods: {
+    Logout () {
+      localStorage.removeItem('userInfo')
+      localStorage.removeItem('token')
+      this.userInfo = {}
+    },
+    Login () {
+      localStorage.setItem('path', this.$route.path)
+      this.$router.push({
+        name: 'Login'
+      })
+    },
+    Register () {
+      localStorage.setItem('path', this.$route.path)
+      this.$router.push({
+        name: 'Register'
+      })
+    }
+
+  },
+  created () {
+    console.log(this.flag)
+    console.log(this.userInfo)
+    if (!this.flag) {
+      localStorage.setItem('path', this.$route.path)
+      this.$router.push({
+        name: 'Login'
+      })
+    }
+    document.scrollingElement.scrollTop = 0
+  }
 
 }
 </script>

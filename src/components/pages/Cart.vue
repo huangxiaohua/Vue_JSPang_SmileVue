@@ -56,7 +56,8 @@ export default {
   data () {
     return {
       cartInfo: [], // 购物车内的商品
-      isEmpty: false // 购物车是否为空，不为空则显示true，为空显示false
+      isEmpty: false, // 购物车是否为空，不为空则显示true，为空显示false
+      flag: localStorage['token']
     }
   },
   filters: {
@@ -66,6 +67,14 @@ export default {
   },
   created () {
     this.getCartInfo()
+  },
+  mounted () {
+    if (!this.flag) {
+      localStorage.setItem('path', this.$route.path)
+      this.$router.push({
+        name: 'Login'
+      })
+    }
   },
   computed: {
     totalMoney () {

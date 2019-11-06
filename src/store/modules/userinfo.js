@@ -9,6 +9,7 @@ const getters = {}
 
 const mutations = {
   USERLOGIN: (state, data) => {
+    console.log('-------login' + data)
     localStorage.setItem('userInfo', JSON.stringify(data))
   },
   // CHANGEICON:(state,url)=>{

@@ -30,7 +30,11 @@ router.post('/login', async ctx => {
           .comparePassword(password, result.password)
           .then(isMatch => {
             // 返回比对结果
-            ctx.body = { code: 200, message: isMatch }
+            ctx.body = {
+              code: 200,
+              message: isMatch,
+              result: isMatch ? result : null
+            }
           })
           .catch(error => {
             // 出现异常，返回异常

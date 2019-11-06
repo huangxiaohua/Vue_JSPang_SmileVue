@@ -35,6 +35,8 @@
 import axios from 'axios'
 import url from '@/serviceAPI.config.js'
 import { Toast } from 'vant'
+import { mapActions } from 'vuex'
+
 export default {
   data () {
     return {
@@ -42,16 +44,18 @@ export default {
       password: '',
       openLoading: false, // 是否开启用户的Loading
       usernameErrorMsg: '', // 当用户名出现错误的时候
-      passwordErrorMsg: '' // 当密码出现错误的时候
+      passwordErrorMsg: '', // 当密码出现错误的时候
+      path: localStorage['path']
     }
   },
   created () {
-    if (localStorage.userInfo) {
+    if (localStorage.getItem('userInfo')) {
       Toast.success('您已经登录')
-      this.$router.push('/')
+      // this.$router.push('/')
     }
   },
   methods: {
+    ...mapActions('userInfo', ['userLogin']),
     goBack () {
       this.$router.go(-1)
     },
@@ -78,11 +82,19 @@ export default {
           console.log(response)
           if (response.data.code == 200 && response.data.message) {
             new Promise((resolve, reject) => {
-              localStorage.userInfo = { userName: this.username }
+              let user = response.data.result
+              localStorage.setItem('token', user._id)
+              // localStorage.setItem('userInfo', JSON.stringify(user))
+
+              this.userLogin(user)
               setTimeout(() => { resolve() }, 500)
             }).then(() => {
               Toast.success('登录成功')
-              this.$router.push('/')
+              // this.$router.push('/')
+              console.log(this.path)
+              if (this.path) {
+                this.$router.push(this.path)
+              }
             }).catch(err => {
               Toast.fail('登录状态保存失败')
               console.log(err)

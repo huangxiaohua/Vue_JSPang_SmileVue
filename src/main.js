@@ -23,6 +23,7 @@ import {
   CellGroup
 } from 'vant'
 import axios from './http/api'
+import store from '../src/store/index'
 
 Vue.use(Button)
   .use(Row)
@@ -51,6 +52,7 @@ Vue.prototype.axios = axios
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

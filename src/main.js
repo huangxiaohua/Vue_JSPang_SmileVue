@@ -12,7 +12,15 @@ import {
   Lazyload,
   List,
   Field,
-  NavBar
+  NavBar,
+  Tab,
+  Tabs,
+  PullRefresh,
+  Stepper,
+  Tabbar,
+  TabbarItem,
+  Cell,
+  CellGroup
 } from 'vant'
 import axios from './http/api'
 
@@ -25,6 +33,14 @@ Vue.use(Button)
   .use(List)
   .use(Field)
   .use(NavBar)
+  .use(Tab)
+  .use(Tabs)
+  .use(PullRefresh)
+  .use(Stepper)
+  .use(Tabbar)
+  .use(TabbarItem)
+  .use(Cell)
+  .use(CellGroup)
 
 // 引入mockjs
 require('./mock/mock.js')

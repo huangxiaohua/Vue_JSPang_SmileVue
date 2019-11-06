@@ -131,7 +131,7 @@ const ShoppingMallJson = {
         ],
         comments: null,
         image:
-          'http://images.baixingliangfan.cn/firstCategoryPicture/20180408/20180408112010_4489.png'
+          'http://images.baixingliangfan.cn/firstCategoryPicture/20180408/20180408111959_2837.png'
       },
       {
         mallCategoryId: '2',

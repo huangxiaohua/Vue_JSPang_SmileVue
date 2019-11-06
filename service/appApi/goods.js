@@ -70,20 +70,62 @@ router.get('/insertAllCategorySub', async ctx => {
   ctx.body = '开始导入数据.....'
 })
 
-
-//***获取商品详细信息的接口
-router.post('/getDetailGoodsInfo',async(ctx)=>{
+//* **获取商品详细信息的接口
+router.post('/getDetailGoodsInfo', async ctx => {
+  try {
     let goodsId = ctx.request.body.goodsId
     const Goods = mongoose.model('Goods')
-    await Goods.findOne({ID:goodsId}).exec()
-    .then(async(result)=>{  
-        ctx.body={code:200,message:result}
-    })
-    .catch(error=>{
-        console.log(error)
-        ctx.body={code:500,message:error}
-    })
+    let result = await Goods.findOne({ ID: goodsId }).exec()
+    ctx.body = { code: 200, message: result }
+  } catch (err) {
+    ctx.body = { code: 500, message: err }
+  }
+})
 
+router.get('/getCategoryList', async ctx => {
+  try {
+    const Category = mongoose.model('Category')
+    let result = await Category.find()
+      .sort({ SORT: 1 })
+      .exec()
+    ctx.body = { code: 200, message: result }
+  } catch (err) {
+    ctx.body = { code: 500, message: err }
+  }
+})
+
+router.post('/getCategorySubList', async ctx => {
+  try {
+    let categoryId = ctx.request.body.categoryId
+    // let categoryId = 1
+    console.log('---getCategorySubList --- categoryId:' + categoryId)
+    const CategorySub = mongoose.model('CategorySub')
+    let result = await CategorySub.find({ MALL_CATEGORY_ID: categoryId })
+      .sort({ SORT: 1 })
+      .exec()
+    ctx.body = { code: 200, message: result }
+  } catch (err) {
+    ctx.body = { code: 500, message: err }
+  }
+})
+
+router.post('/getGoodsListByCategorySubID', async ctx => {
+  try {
+    let categorySubId = ctx.request.body.categorySubId // 小类别
+    let page = ctx.request.body.page
+    let num = 10 // 每页显示数量
+    let start = (page - 1) * num
+    // let categorySubId = '2c9f6c946016ea9b016016f79c8e0000'
+    const Goods = mongoose.model('Goods')
+    let result = await Goods.find({ SUB_ID: categorySubId })
+      .skip(start)
+      .limit(num)
+      .exec()
+
+    ctx.body = { code: 200, message: result }
+  } catch (err) {
+    ctx.body = { code: 500, message: err }
+  }
 })
 
 module.exports = router

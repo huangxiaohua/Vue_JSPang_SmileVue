@@ -26,6 +26,9 @@
                     :loading="openLoading"
                     size="large">登录</van-button>
       </div>
+
+      <van-button type="primary"
+                  @click="Register">我要注册</van-button>
     </div>
 
   </div>
@@ -59,7 +62,12 @@ export default {
     goBack () {
       this.$router.go(-1)
     },
-
+    Register () {
+      localStorage.setItem('path', this.$route.path)
+      this.$router.push({
+        name: 'Register'
+      })
+    },
     //* ****注册用户的实行方法*****
     LoginAction () {
       this.checkForm() && this.axiosLoginUser()

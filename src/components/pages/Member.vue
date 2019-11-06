@@ -11,14 +11,14 @@
 
     <div class="login">
 
-      <div>
+      <!--       <div>
         <van-button type="warning"
                     @click="Login">我要登录</van-button>
       </div>
       <div>
         <van-button type="primary"
                     @click="Register">我要注册</van-button>
-      </div>
+      </div> -->
       <div>
         <van-button type="warning"
                     @click="Logout">退出</van-button>

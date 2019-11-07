@@ -27,10 +27,13 @@
                     size="large">登录</van-button>
       </div>
 
-      <van-button type="primary"
-                  @click="Register">我要注册</van-button>
-    </div>
+      <div class="register-button">
+        <van-button type="primary"
+                    @click="Register"
+                    size="large">我要注册</van-button>
+      </div>
 
+    </div>
   </div>
 </template>
 

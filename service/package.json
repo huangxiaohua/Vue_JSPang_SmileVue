@@ -21,6 +21,7 @@
     "koa-views": "^6.2.1",
     "koa2-cors": "^2.0.6",
     "mongoose": "^5.7.7",
+    "mssql": "^6.0.1",
     "resolve": "^1.12.0"
   }
 }
